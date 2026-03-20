@@ -1,40 +1,57 @@
-🥖 Vitrine de Padaria Cloud-Native
+**🥖 Vitrine de Padaria Cloud-Native**
 
-Meu Primeiro Contato com AWS & Linux
-Este projeto documenta minha jornada de aprendizado prático, saindo do zero absoluto no Linux e na AWS. Desenvolvi um sistema CRUD (Create, Read, Update, Delete) para uma vitrine de padaria, utilizando uma arquitetura baseada em desacoplamento de storage.
+**Arquitetura de Redes, Computação e Storage na AWS**
+Este projeto documenta minha jornada de aprendizado prático, saindo do zero absoluto no Linux e na AWS. Desenvolvi um sistema CRUD para uma vitrine de padaria, focando no desacoplamento de recursos e no isolamento de rede para criar uma infraestrutura moderna e escalável.
 
-🎯 O Desafio
+⚠️** Nota do Projeto:** Implementado em ambiente Sandbox AWS, com ciclo de vida temporário (3 horas) para fins de laboratório e validação de arquitetura.
 
-O objetivo era construir uma aplicação funcional para cadastro de produtos com fotos. O detalhe crucial: as imagens não poderiam ficar armazenadas no servidor local (Amazon EC2); elas deveriam ser enviadas e recuperadas de forma segura através do Amazon S3.
+**🎯 O Desafio Técnico**
 
-🛠️ Tecnologias e Ferramentas
+O objetivo era construir uma aplicação funcional onde o servidor web (Amazon EC2) permanecesse "limpo" (stateless). O detalhe crucial: as imagens não poderiam ocupar espaço no disco do servidor; elas deveriam ser enviadas, armazenadas e lidas diretamente de forma segura através do Amazon S3.
 
-Cloud: AWS (EC2 e S3).
-Sistema Operacional: Amazon Linux 2023.
-Servidor Web: Apache (httpd).
-Linguagem: PHP 8.x + AWS CLI.
-IA Aided Development: Utilizei IA para auxiliar no diagnóstico de erros de infraestrutura e depuração de logs.
+**🛠️ Tecnologias e Ferramentas**
 
-🧠 Aprendizados de Infraestrutura (Troubleshooting)
+Networking: AWS VPC (Subnets, Internet Gateway, Route Tables).
+Computação: Amazon EC2 (Amazon Linux 2023).
+Storage: Amazon S3 (Bucket de objetos).
+Segurança: IAM Roles (Princípio de menor privilégio) e Security Groups.
+Web Stack: Apache (httpd) + PHP 8.x + AWS CLI.
+Acesso & Dev: PowerShell (SSH Nativo) e Editor Nano.
 
-Como este foi meu primeiro contato com Linux e Cloud, enfrentei desafios fundamentais que moldaram minha visão sobre nuvem:
+**⚙️ Implementação Passo a Passo (Hands-on)**
 
-Segurança com IAM Roles:
-Aprendi a importância de não expor credenciais (Access Keys) no código. Configurei uma IAM Role anexada à instância EC2, permitindo que o servidor se autentique no S3 de forma automática e segura seguindo o princípio de menor privilégio.
+1. Fundação de Rede e Segurança
 
-Vencendo o SELinux:
-Enfrentei bloqueios onde o Apache não conseguia executar comandos externos. Aprendi a analisar logs em /var/log/httpd/error_log, entender o comportamento do SELinux (módulo de segurança do kernel) e ajustar as permissões do sistema.
+Em vez de usar a rede padrão, configurei uma VPC dedicada para isolar a aplicação:
+Criação de Internet Gateway e Route Tables para gerenciar o tráfego.
+Definição de Security Groups permitindo apenas as portas 80 (HTTP) e 22 (SSH restrito).
+IAM Roles: Configurei uma Role anexada à EC2 para que o servidor se autenticasse no S3 automaticamente, eliminando o uso de senhas ou Access Keys no código.
 
-Sanitização e Shell Scripting:
-Entendi como o Linux lida com sistemas de arquivos. Implementei lógica em PHP para tratar nomes de arquivos (remover acentos e espaços), evitando erros de "path does not exist" na integração com o S3.
+3. Provisionamento e Setup via Terminal
 
-Gestão de Permissões:
-Dominei comandos essenciais de administração de sistemas, como chmod e chown para permissões de pastas, e systemctl para gestão de serviços.
+Acesse o servidor via PowerShell e gerenciei o ambiente integralmente via linha de comando:
+Instalação: sudo dnf install -y httpd php php-cli.
+Gestão de Serviços: Configuração do Apache via systemctl para garantir a persistência.
+Storage CLI: Criação e teste do bucket S3 via terminal para validar as permissões da Role.
 
-🚀 Funcionalidades
-Upload Direto: Fotos enviadas via formulário são processadas e armazenadas no bucket S3.
-Sincronização Cloud-Native: A vitrine consome os objetos diretamente da nuvem, garantindo que o servidor web permaneça stateless.
-Interface Responsiva: Cards de produtos que se adaptam a diferentes dispositivos.
+4. Desenvolvimento "Terminal-First"
 
-💡 Visão de Futuro
-Mais do que "fazer um site", este projeto foi sobre entender como as peças de uma infraestrutura escalável se encaixam. Como desenvolvedor em início de carreira, meu foco é dominar a fundação da nuvem para construir soluções cada vez mais robustas e seguras.
+O código foi escrito no diretório /var/www/html utilizando o editor Nano.
+Sanitização: Implementei lógica em PHP para tratar nomes de arquivos (removendo acentos e espaços), evitando erros de path no Linux/S3.
+Sincronização Cloud-Native: O sistema processa o upload e utiliza o AWS CLI para mover o objeto para a nuvem.
+
+**🧠 Aprendizados e Troubleshooting**
+
+Como este foi meu primeiro contato com o ecossistema, enfrentei desafios fundamentais:
+Vencendo o SELinux: O Apache inicialmente não conseguia executar comandos externos. Aprendi a analisar logs em /var/log/httpd/error_log e ajustar o estado do sistema para permitir as operações.
+Gestão de Permissões: Visitei comandos de administração como chmod e chown para garantir que o servidor web pudesse manipular os diretórios necessários.
+Ciclo de Vida Sandbox: Adaptação ao gerenciamento de tempo e recursos em um ambiente de laboratório com tempo limitado.
+
+**🚀 Funcionalidades**
+
+Upload Automático: Fotos enviadas via formulário vão direto para o bucket S3.
+Arquitetura Stateless: A vitrine consome os objetos da nuvem, permitindo que o servidor seja descartado ou escalado sem perda de arquivos.
+Interface Responsiva: Cards de produtos que se ajustam a qualquer tamanho de tela.
+
+**💡 Visão de Futuro**
+Este projeto não foi apenas sobre "fazer um site", mas sobre entender como as peças de uma infraestrutura escalável se encaixam. Mesclar e aplicar meus conhimentos, além de estar pela primeira vez, acrescentando algo ao meu portfólio.
