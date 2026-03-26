@@ -92,4 +92,4 @@ Este projeto consolidou meu entendimento sobre como as peças de uma infraestrut
 
 ---
 **Desenvolvido por Thiago Barbosa Carneiro**
-[LinkedIn](https://www.linkedin.com/in/thiago-barbosa-carneiro-b3648a1b5/)
+[LinkedIn](https://www.linkedin.com/in/thiagobarbosacarneiro)
